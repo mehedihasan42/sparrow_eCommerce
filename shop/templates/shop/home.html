@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- LEFT SIDEBAR FILTER -->
+    <aside class="col-lg-2 col-md-4 border-end position-sticky top-0 vh-100 overflow-auto">
+      <h5 class="mb-3">Filter</h5>
+
+      <form method="get">
+
+        <div class="mb-3">
+          <label class="form-label">Min Price</label>
+          <input type="number" name="min_price" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Max Price</label>
+          <input type="number" name="max_price" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Rating</label>
+          <select name="rating" class="form-select">
+            <option value="">Any</option>
+            {% for i in "12345" %}
+              <option value="{{ i }}">{{ i }} Star</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button class="btn btn-dark w-100">Apply</button>
+
+      </form>
+    </aside>
+
+    <!-- RIGHT PRODUCT LIST -->
+    <main class="col-lg-9 col-md-8">
+       <h3 class="mb-4 mt-5">Featured Products</h3>
+  <div class="row">
+    {% for product in featured_product %}
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <a href="{% url 'product_details' product.slug %}" class="text-decoration-none text-dark">
+          <div class="card h-100">
+            <img src="{{ product.image.url }}" class="card-img-top">
+            <div class="card-body">
+              <h6>{{ product.name }}</h6>
+              <p>৳ {{ product.price }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+         <h3 class="mb-4 mt-5">Our Collections</h3>
+  <div class="row">
+    {% for product in products %}
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <a href="{% url 'product_details' product.slug %}" class="text-decoration-none text-dark">
+          <div class="card h-100">
+            <img src="{{ product.image.url }}" class="card-img-top">
+            <div class="card-body">
+              <h6>{{ product.name }}</h6>
+              <p>৳ {{ product.price }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+    </main>
+
+  </div>
+</div>
+
+{% endblock %}
+
+

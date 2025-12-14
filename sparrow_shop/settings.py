@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,7 +43,12 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5" # Or your chosen pack
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,7 +66,7 @@ ROOT_URLCONF = 'sparrow_shop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +75,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
+                'shop.context_processor.cart_item_count'
             ],
         },
     },
@@ -82,8 +89,15 @@ WSGI_APPLICATION = 'sparrow_shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sparrow_db',
+        'USER': 'root',
+        'PASSWORD': 'mehedi@$4154',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
@@ -130,9 +144,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media'
 
 # login
-LOGIN_URL = ''
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = ''
+LOGOUT_REDIRECT_URL = 'signin'
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_SESSION_REMEMBER = True
@@ -142,3 +156,15 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFERMATION = True
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SSLCOMMERZE_STORE_ID = config('SSLCOMMERZE_STORE_ID')
+SSLCOMMERZE_STORE_PASSWORD = config('SSLCOMMERZE_STORE_PASSWORD')
+SSLCOMMERZE_PAYMENT_URL = 'https://sandbox.sslcommerz.com/gwprocess/v3/api.php'
+SSLCOMMERZE_VALIDATION_URL = 'https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?wsdl'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 8000
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True

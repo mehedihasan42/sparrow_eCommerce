@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-5">
+    <img src="{{ product.image.url }}" class="img-fluid">
+  </div>
+
+  <div class="col-md-7">
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.description }}</p>
+    <h4>৳ {{ product.price }}</h4>
+
+    <a href="{% url 'cart_add' product.id %}" class="btn btn-success">Add to Cart</a>
+
+    <hr>
+
+    <h5>Average Rating: {{ product.average_ratins|floatformat:1 }}/5</h5>
+
+    {% if user.is_authenticated %}
+      <form method="post" action="{% url 'rate_product' product.id %}">
+        {% csrf_token %}
+        {{ rating_form.as_p }}
+        <button class="btn btn-primary btn-sm">Submit Rating</button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+<hr>
+
+<h4>Related Products</h4>
+<div class="row">
+  {% for item in related_product %}
+    <div class="col-md-3">
+      <div class="card">
+        <img src="{{ item.image.url }}" class="card-img-top">
+        <div class="card-body">
+          <h6>{{ item.name }}</h6>
+          <a href="{% url 'product_details' item.slug %}" class="btn btn-sm btn-outline-primary">View</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

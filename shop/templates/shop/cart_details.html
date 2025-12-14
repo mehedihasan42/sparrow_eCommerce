@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+
+<h3>Your Cart</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Qty</th>
+      <th>Price</th>
+      <th>Total</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for item in cart.cart_items.all %}
+      <tr>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>৳ {{ item.product.price }}</td>
+        <td>৳ {{ item.get_cost }}</td>
+        <td>
+          <a href="{% url 'cart_delete' item.product.id %}" class="btn btn-danger btn-sm">Remove</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4>Total: ৳ {{ cart.get_total_cost }}</h4>
+
+<a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="mb-3 text-center">
+                        Rate Product
+                    </h4>
+
+                    <p class="text-center text-muted">
+                        {{ product.name }}
+                    </p>
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <!-- Rating field -->
+                        <div class="mb-3">
+                            <label class="form-label">Rating</label>
+                            {{ form.rating }}
+                        </div>
+
+                        <!-- Comment field -->
+                        <div class="mb-3">
+                            <label class="form-label">Comment</label>
+                            {{ form.comment }}
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                Submit Rating
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
